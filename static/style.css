@@ -1,0 +1,349 @@
+/* style.css */
+/* 请用此代码完全替换您的 style.css 文件 */
+/* 通用样式 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+/* 页面头部 - 包含标题和语言/时间 */
+.page-header {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr; /* 左中右三列布局 */
+    align-items: center;
+    padding: 10px 0;
+    margin-bottom: 20px;
+}
+
+.header-left {
+    grid-column: 1; /* 左侧占第一列 */
+}
+
+.header-center {
+    grid-column: 2; /* 中间占第二列 */
+    text-align: center;
+}
+
+.header-right {
+    grid-column: 3; /* 右侧占第三列 */
+    justify-self: end; /* 内部元素右对齐 */
+}
+
+.page-header h1 {
+    margin: 0;
+    color: #4a4a4a;
+    font-size: 1.8em;
+}
+
+.refresh-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+#last-refresh-container {
+    color: #888;
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+/* 语言选择按钮 */
+.lang-switch {
+    display: flex;
+    gap: 10px;
+}
+
+.lang-button {
+    text-decoration: none;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.2);
+    font-size: 0.9em;
+    transition: background-color 0.2s;
+}
+
+.lang-button:hover, .lang-button.active {
+    background-color: green;
+}
+
+/* 第二行头部 - 矿箱列表和设备状态 */
+.secondary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.list-link {
+    text-decoration: none;
+    color: gre;
+    background-color: transparent;
+}
+
+.list-link:hover {
+    color: #0056b3;
+}
+
+/* 状态说明图例 */
+.status-key {
+    display: flex;
+    gap: 15px;
+    padding: 5px 15px;
+    background-color: transparent;
+    border-radius: 5px;
+}
+
+.key-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+    color: #555;
+    white-space: nowrap;
+}
+
+.key-color {
+    width: 20px;
+    height: 10px;
+    border-radius: 2px;
+    margin-right: 5px;
+}
+
+.key-color.normal { background-color: green; }
+.key-color.warning { background-color: #f0ad4e; }
+.key-color.critical { background-color: #d9534f; }
+.key-color.offline { background-color: #8c8c8c; }
+
+#status-message {
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* 主要容器 */
+#main-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+/* 区域容器样式 */
+.area-container {
+    margin-top:20px;
+    width: 100%;
+    max-width: 1200px;
+    background-color: green; /* 默认背景色 */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+/* 区域头部样式 */
+.area-header {
+    padding: 20px;
+    position: relative;
+    cursor: pointer;
+    background-color: transparent; /* 移除固定背景色，让它继承父容器颜色 */
+    transition: background-color 0.3s ease;
+}
+
+.area-header h2 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.area-header p {
+    margin: 5px 0 0;
+    font-size: 1em;
+}
+
+/* 根据状态类设置区域容器的背景色 */
+.area-container.critical {
+    background-color: #d9534f;
+}
+
+.area-container.offline {
+    background-color: #8c8c8c;
+}
+
+.area-container.warning {
+    background-color: #f0ad4e;
+}
+
+.area-container.normal {
+    background-color: green;
+}
+
+
+/* PLC卡片列表 */
+.plc-list {
+    display: none;
+    flex-wrap: wrap;
+    padding: 20px;
+    gap: 15px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #ccc;
+}
+
+.plc-list.expanded {
+    display: flex;
+}
+
+/* PLC卡片样式 */
+.plc-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 15px;
+    width: calc(33.333% - 10px);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease-in-out;
+    color: #333;
+    cursor: pointer;
+}
+
+@media (max-width: 1200px) {
+    .plc-card {
+        width: calc(50% - 10px);
+    }
+}
+
+@media (max-width: 768px) {
+    .plc-card {
+        width: 100%;
+    }
+}
+
+/* 卡片背景颜色样式 */
+.plc-card.normal-card { background-color: #fff; }
+.plc-card.warning-card { background-color: #ffe58f; }
+.plc-card.critical-card { background-color: #ffccc7; }
+.plc-card.offline-card { background-color: #6c757d; }
+
+.plc-card h3 {
+    margin: 0 0 10px;
+    font-size: 1.1em;
+    color: #007bff;
+}
+
+.plc-card p {
+    margin: 0;
+    font-size: 0.9em;
+}
+
+.data-section {
+    margin-top: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.data-section h4 {
+    margin: 0 0 5px;
+    font-size: 1em;
+    color: #666;
+}
+
+.data-item {
+    margin-bottom: 5px;
+    padding-left: 10px;
+}
+
+.data-section ul {
+    list-style-type: none;
+    padding-left: 15px;
+    margin-top: 5px;
+}
+
+.data-section li {
+    margin-bottom: 2px;
+}
+
+/* 统计数字的样式 */
+.status-count {
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: underline;
+    margin: 0 5px;
+}
+
+/* 模态弹窗样式 */
+.modal {
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+    position: relative;
+    max-height: 80%;
+    overflow-y: auto;
+    color: #333;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.modal-content ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.modal-content li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* 返回按钮 */
+.back-button {
+    background-color: #5cb85c;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 0.9em;
+    margin-right: 20px;
+}
+
+.back-button:hover {
+    background-color: #4cae4c;
+}
+
+/* 告警文字颜色 */
+.warning-text {
+    color: #f0ad4e !important;
+}
+
+.critical-text {
+    color: #d9534f !important;
+}

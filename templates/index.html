@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ texts.page_title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="page-header">
+        <div class="header-left">
+        </div>
+        <div class="header-center">
+            <h1>{{ texts.page_title }}</h1>
+        </div>
+        <div class="header-right">
+            <div class="refresh-container">
+                <span id="last-refresh-container">{{ texts.last_refresh }}: <span id="last-refresh"></span></span>
+                <div class="lang-switch">
+                    <a href="?lang=zh" class="lang-button {{ 'active' if lang == 'zh' }}">中文</a>
+                    <a href="?lang=en" class="lang-button {{ 'active' if lang == 'en' }}">English</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="secondary-header">
+        <div class="header-left">
+            <a href="{{ url_for('list_page') }}?lang={{ lang }}" class="list-link">矿箱列表</a>
+        </div>
+        <div class="header-right">
+            <div class="status-key">
+                <span class="key-item">
+                    <span class="key-color normal"></span>
+                    {{ texts.status_key_normal }}
+                </span>
+                <span class="key-item">
+                    <span class="key-color warning"></span>
+                    {{ texts.status_key_warning }}
+                </span>
+                <span class="key-item">
+                    <span class="key-color critical"></span>
+                    {{ texts.status_key_critical }}
+                </span>
+                <span class="key-item">
+                    <span class="key-color offline"></span>
+                    {{ texts.status_key_offline }}
+                </span>
+            </div>
+        </div>
+    </div>
+    
+    <p id="status-message" style="text-align: center; margin-top: 20px; font-style: italic;"></p>
+
+    <div class="main-content">
+        <div class="area-container" data-area="A">
+            <div class="area-header">
+                <h2>A{{ texts.area_label }} (<span class="total-count">0</span> {{ texts.plc_label }})</h2>
+                <p>
+                    {{ texts.status_normal }}: <span class="status-count normal-count" data-status="normal">0</span>
+                    {{ texts.status_critical }}: <span class="status-count critical-count" data-status="critical">0</span>
+                    {{ texts.status_warning }}: <span class="status-count warning-count" data-status="warning">0</span>
+                    {{ texts.status_offline }}: <span class="status-count offline-count" data-status="offline">0</span>
+                </p>
+            </div>
+            <div class="plc-list"></div>
+        </div>
+
+        <div class="area-container" data-area="B">
+            <div class="area-header">
+                <h2>B{{ texts.area_label }} (<span class="total-count">0</span> {{ texts.plc_label }})</h2>
+                <p>
+                    {{ texts.status_normal }}: <span class="status-count normal-count" data-status="normal">0</span>
+                    {{ texts.status_critical }}: <span class="status-count critical-count" data-status="critical">0</span>
+                    {{ texts.status_warning }}: <span class="status-count warning-count" data-status="warning">0</span>
+                    {{ texts.status_offline }}: <span class="status-count offline-count" data-status="offline">0</span>
+                </p>
+            </div>
+            <div class="plc-list"></div>
+        </div>
+
+        <div class="area-container" data-area="C">
+            <div class="area-header">
+                <h2>C{{ texts.area_label }} (<span class="total-count">0</span> {{ texts.plc_label }})</h2>
+                <p>
+                    {{ texts.status_normal }}: <span class="status-count normal-count" data-status="normal">0</span>
+                    {{ texts.status_critical }}: <span class="status-count critical-count" data-status="critical">0</span>
+                    {{ texts.status_warning }}: <span class="status-count warning-count" data-status="warning">0</span>
+                    {{ texts.status_offline }}: <span class="status-count offline-count" data-status="offline">0</span>
+                </p>
+            </div>
+            <div class="plc-list"></div>
+        </div>
+
+        <div class="area-container" data-area="D">
+            <div class="area-header">
+                <h2>D{{ texts.area_label }} (<span class="total-count">0</span> {{ texts.plc_label }})</h2>
+                <p>
+                    {{ texts.status_normal }}: <span class="status-count normal-count" data-status="normal">0</span>
+                    {{ texts.status_critical }}: <span class="status-count critical-count" data-status="critical">0</span>
+                    {{ texts.status_warning }}: <span class="status-count warning-count" data-status="warning">0</span>
+                    {{ texts.status_offline }}: <span class="status-count offline-count" data-status="offline">0</span>
+                </p>
+            </div>
+            <div class="plc-list"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

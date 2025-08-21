@@ -1,0 +1,87 @@
+/* 请用这段代码完全替换 static/details.css */
+
+.details-main {
+    padding: 20px 40px;
+}
+
+.summary-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ddd;
+}
+
+.summary-header h2 {
+    font-size: 32px;
+    margin: 0 0 10px 0;
+}
+
+.summary-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.detail-item {
+    background-color: #f0f4f8;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+    font-size: 16px;
+}
+
+.details-section {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 1;
+}
+
+.details-section h3 {
+    border-bottom: 2px solid #004d99;
+    padding-bottom: 10px;
+    color: #004d99;
+}
+
+.section-content {
+    padding-top: 10px;
+}
+
+.main-info-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.fan-list, .sprayer-pump-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: flex-start;
+}
+
+.fan-item, .sprayer-pump-item {
+    background-color: #e2eaf4;
+    padding: 15px;
+    border-radius: 8px;
+    min-width: 180px;
+    flex: 1;
+    box-sizing: border-box;
+}
+
+.fan-item h5, .sprayer-pump-item h5 {
+    margin: 0 0 10px 0;
+    color: #0056b3;
+}
+
+/* 新增：环境指标的两列布局 */
+.environmental-metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
