@@ -1,50 +1,52 @@
-/* 请用此代码完全替换您的 list.css 文件 */
-/* list.css */
-/* 通用样式 */
+/* 请用这段代码完全替换您的 list.css 文件 */
+
+/* 全局样式和主题色变量 */
 body {
-    font-family: Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f7f9;
     color: #333;
 }
 
-/* 页面头部 */
-.page-header {
+/* 页面头部样式 */
+.page-header, .secondary-header {
     background-color: #fff;
-    padding: 15px 40px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: grid;
-    grid-template-columns: 1fr auto 1fr; /* 左中右三列布局 */
+    padding: 5px 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+    border-radius: 12px;
+    margin: 1px;
 }
 
 .page-header h1 {
-    color: #004d99;
+    color: #1a8031; /* 深绿色主题色 */
     font-size: 24px;
     margin: 0;
 }
 
-.header-left {
-    grid-column: 1;
+.header-left, .header-right, .header-center {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
-.header-center {
-    grid-column: 2;
+.secondary-header .header-left {
+    justify-content: flex-start;
+}
+
+.secondary-header .header-right {
+    justify-content: flex-end;
+}
+
+.secondary-header .header-center {
+    flex: 2;
     text-align: center;
 }
 
-.header-right {
-    grid-column: 3;
-    justify-self: end;
-}
-
-.refresh-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-}
-
+/* 语言切换按钮样式 */
 .lang-switch {
     display: flex;
     gap: 10px;
@@ -52,133 +54,169 @@ body {
 
 .lang-button {
     text-decoration: none;
+    color: #28a745; /* 绿色主题色 */
+    padding: 5px 10px;
+    border-radius: 6px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.lang-button.active {
+    background-color: #5cb85c;
     color: #fff;
-    background-color: #6c757d;
-    padding: 8px 12px;
-    border-radius: 5px;
-    transition: background-color 0.2s;
 }
 
-.lang-button:hover, .lang-button.active {
-    background-color: #5a6268;
+.lang-button:hover:not(.active) {
+    background-color: #e6f0e6;
 }
 
-#last-refresh-container {
-    color: #888;
-    font-size: 0.9em;
-}
-
-/* 第二行头部 - 按钮 */
-.secondary-header {
+/* 按钮容器样式 */
+.buttons-container {
     display: flex;
-    justify-content: space-between;
+    gap: 15px;
     align-items: center;
-    padding: 10px 40px; /* 与 page-header 保持相同的左右内边距 */
-    margin-bottom: 20px;
 }
 
-/* 返回按钮 */
-.back-button, .action-button {
+/* 按钮样式 */
+.back-button, .export-button {
     text-decoration: none;
-    background-color: #007bff;
-    color: white;
-    padding: 8px 15px;
-    border-radius: 5px;
-    transition: background-color 0.2s;
+    font-weight: bold;
+    padding: 5px 8px;
     border: none;
+    border-radius: 6px;
     cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: white; /* 确保文字颜色是白色 */
 }
 
-.back-button:hover, .action-button:hover {
-    background-color: #0056b3;
+/* 返回主页按钮的特定样式 */
+.back-button {
+    background-color: #28a745; /* 绿色主题色 */
 }
 
-/* 主要容器和表格样式 */
-#main-container {
-    padding: 20px;
-    max-width: 1400px;
-    margin: auto;
+.back-button:hover {
+    background-color: #218838;
+}
+
+/* 导出为 Excel 按钮的特定样式 */
+.export-button {
+    background-color: #28a745; /* 绿色主题色 */
+}
+
+.export-button:hover {
+    background-color: #218838;
+}
+
+.main-container {
+    padding: 5px;
+}
+
+/* --- 表格相关样式 --- */
+.container-list-view {
+    overflow-x: auto; /* 关键：使表格可以水平滚动 */
+    background-color: #fff;
+    padding: 5px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .data-table {
     width: 100%;
+    /* 移除 min-width，让内容自动撑开 */
     border-collapse: collapse;
-    background-color: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    overflow: hidden;
+    margin-top: 2px;
 }
 
 .data-table th, .data-table td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: left;
+    border: 1px solid #e0e0e0;
+    padding: 6px;
+    text-align: left; /* 关键：默认左对齐 */
     white-space: nowrap;
 }
 
-.data-table th {
-    background-color: #004d99;
+.data-table thead th {
+    background-color: #5cb85c;
     color: white;
     font-weight: bold;
 }
 
-.data-table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
+/* 核心：为固定列添加 sticky 样式 */
+.data-table .sticky-column {
+    position: sticky;
+    left: 0;
+    z-index: 20; /* 提高 z-index 以确保覆盖其他列 */
+    /* 关键修改：背景色设置为透明，让行背景色透出 */
+    background-color: transparent;
 }
 
-.data-table tbody tr:hover {
-    background-color: #e9e9e9;
+/* 确保离线状态的固定列背景颜色和非固定列一致 */
+.data-table tr.offline .sticky-column {
+    background-color: #f1f1f1;
+    color: #888;
 }
 
-.normal-status { color: green; font-weight: bold; }
-.warning-status { color: #f0ad4e; font-weight: bold; }
-.critical-status { color: #d9534f; font-weight: bold; }
-.offline-status { color: #8c8c8c; font-weight: bold; }
-
-/* 分页样式 */
-.pagination-container {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+/* 正常状态下的固定列背景色 */
+.data-table tr.normal .sticky-column {
+    background-color: #e6f7ec;
+    color: #333;
 }
 
-.pagination-button {
-    background-color: #e9ecef;
-    border: 1px solid #dee2e6;
-    color: #007bff;
-    padding: 8px 12px;
-    text-decoration: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s;
+/* 警告状态下的固定列背景色 */
+.data-table tr.warning .sticky-column {
+    background-color: #fff4e0;
+    color: #333;
 }
 
-.pagination-button:hover {
-    background-color: #cfe2ff;
+/* 危险状态下的固定列背景色 */
+.data-table tr.critical .sticky-column {
+    background-color: #fde8e8;
+    color: #333;
 }
 
-.pagination-button.active {
-    background-color: #007bff;
+/* 表格头部固定列的背景色 */
+.data-table thead th.sticky-column {
+    background-color: #5cb85c;
     color: white;
-    border-color: #007bff;
 }
 
-.pagination-button.disabled {
-    background-color: #e9ecef;
-    color: #6c757d;
-    cursor: not-allowed;
-    border-color: #dee2e6;
+
+/* 非固定列的离线状态样式 */
+.data-table tr.offline td {
+    text-align: center;
+    color: #888;
 }
 
-/* 加载动画和错误消息 */
+.data-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.data-table tr:hover {
+    background-color: #eef2ef;
+}
+
+.data-table td a {
+    text-decoration: none;
+    color: #28a745;
+}
+
+.data-table td a:hover {
+    text-decoration: underline;
+}
+
+/* 状态颜色 */
+.data-table tr.normal { background-color: #e6f7ec; }
+.data-table tr.warning { background-color: #fff4e0; }
+.data-table tr.critical { background-color: #fde8e8; }
+.data-table tr.offline { background-color: #f1f1f1; }
+
+/* 加载和错误提示 */
 .loading-spinner {
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #3498db;
+    display: block;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #28a745;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
     animation: spin 1s linear infinite;
     margin: 50px auto;
 }
@@ -188,9 +226,103 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-#error-message {
+.error-message {
     text-align: center;
     color: red;
-    font-size: 1.2em;
-    padding: 20px;
+    font-size: 1.1em;
+    margin-top: 20px;
+}
+
+/* 分页样式 */
+.list-and-export-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.pagination-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.pagination-button {
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.pagination-button.active {
+    background-color: #28a745;
+    color: white;
+    border: 1px solid #28a745;
+}
+
+.pagination-button:hover:not(.active) {
+    background-color: #ddd;
+}
+
+.pagination-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* 移动设备样式 */
+@media (max-width: 600px) {
+    /* 修复头部居中对齐 */
+    .page-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+        padding: 10px;
+    }
+    
+    .header-left, .header-right, .header-center {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+
+    /* 修复返回按钮和导出按钮布局 */
+    .secondary-header {
+        display: flex;
+        flex-direction: row; /* 在小屏幕下保持横向排列 */
+        flex-wrap: wrap; /* 允许换行 */
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between; /* 使两侧按钮分开 */
+    }
+    
+    .secondary-header .header-left, 
+    .secondary-header .header-right, 
+    .secondary-header .header-center {
+        justify-content: center; /* 确保所有子容器都居中 */
+        width: 100%;
+        text-align: center;
+    }
+    
+    .secondary-header .header-left {
+        order: 1; /* 确保返回主页在第一行 */
+    }
+
+    .secondary-header .header-right {
+        order: 2; /* 确保导出为excel在第二行 */
+    }
+
+    .back-button, .export-button {
+        width: auto; /* 恢复宽度，让按钮根据内容自适应 */
+        box-sizing: border-box;
+    }
+
+    .data-table th, .data-table td {
+        padding: 8px 4px;
+        font-size: 14px;
+    }
 }

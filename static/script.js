@@ -1,18 +1,17 @@
-// 请用此代码完全替换您的 script.js 文件
 document.addEventListener('DOMContentLoaded', function() {
     const statusMessage = document.getElementById('status-message');
     const lastRefreshSpan = document.getElementById('last-refresh');
     
-    // 从 URL 获取当前语言
     const urlParams = new URLSearchParams(window.location.search);
     const lang = urlParams.get('lang') || 'zh';
+    const REFRESH_INTERVAL_MS = 20000;
 
-    // 完整的翻译字典
     const translations = {
         'zh': {
             'container_id': '集装箱编号',
             'type': '类型',
             'status': '状态',
+            'vendor': '供应商',
             'normal': '正常',
             'warning': '普通告警',
             'critical': '严重告警',
@@ -20,17 +19,22 @@ document.addEventListener('DOMContentLoaded', function() {
             'loading': '正在获取数据...',
             'error': '无法获取数据。请检查网络和服务器。',
             'plc_label': '设备',
-            'area_label': '区',
+            'area_label': '-区',
             'status_key_normal': '正常运行',
             'status_key_warning': '普通告警',
             'status_key_critical': '严重告警',
             'status_key_offline': '设备离线',
-            'last_refresh': '最后刷新'
+            'last_refresh': '最后刷新',
+            'alarm_details_title': '告警详情',
+            'alarm_type': '告警类型',
+            'alarm_description': '告警描述',
+            'no_alarms': '该设备目前没有告警信息'
         },
         'en': {
             'container_id': 'Container ID',
             'type': 'Type',
             'status': 'Status',
+            'vendor': 'Vendor',
             'normal': 'Normal',
             'warning': 'Warning',
             'critical': 'Critical',
@@ -38,40 +42,30 @@ document.addEventListener('DOMContentLoaded', function() {
             'loading': 'Fetching data...',
             'error': 'Unable to fetch data. Check network and server.',
             'plc_label': 'PLCs',
-            'area_label': 'Area',
+            'area_label': '-Area',
             'status_key_normal': 'Normal',
             'status_key_warning': 'Warning',
             'status_key_critical': 'Critical',
             'status_key_offline': 'Offline',
-            'last_refresh': 'Last Refresh'
+            'last_refresh': 'Last Refresh',
+            'alarm_details_title': 'Alarm Details',
+            'alarm_type': 'Alarm Type',
+            'alarm_description': 'Alarm Description',
+            'no_alarms': 'There is currently no information available for this device'
         }
     };
 
     const areas = ['A', 'B', 'C', 'D'];
     let allPlcData = {};
-    let pollingIndex = 0;
-    const pollIntervals = [10000, 30000, 120000];
 
-    // Helper function to show PLC IPs in a modal
-    function showPlcIps(area, status) {
-        const plcContainers = allPlcData[area]?.containers || {};
-        const ips = Object.keys(plcContainers)
-                      .filter(containerId => plcContainers[containerId].status === status)
-                      .map(containerId => `${containerId}: ${plcContainers[containerId].ip}`);
-        
-        if (ips.length === 0) {
-            return;
-        }
-
+    function showModal(title, content) {
         const modal = document.createElement('div');
         modal.classList.add('modal');
         modal.innerHTML = `
             <div class="modal-content">
                 <span class="close-button">&times;</span>
-                <h3>${area}${translations[lang].area_label} ${translations[lang][status]}${translations[lang].plc_label} (${ips.length})</h3>
-                <ul>
-                    ${ips.map(item => `<li>${item}</li>`).join('')}
-                </ul>
+                <h3>${title}</h3>
+                <div class="modal-body">${content}</div>
             </div>
         `;
         document.body.appendChild(modal);
@@ -80,14 +74,66 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.removeChild(modal);
         });
 
-        window.addEventListener('click', (e) => {
+        modal.addEventListener('click', (e) => {
             if (e.target === modal) {
                 document.body.removeChild(modal);
             }
         });
     }
 
-    // Helper function to render PLC brief cards
+    function showPlcList(area, status) {
+        const plcContainers = allPlcData[area]?.containers || {};
+        const ips = Object.keys(plcContainers)
+                      .filter(containerId => plcContainers[containerId].status === status)
+                      .map(containerId => `${containerId}: ${plcContainers[containerId].ip}`);
+        
+        if (ips.length === 0) {
+            showModal(`${area}${translations[lang].area_label} ${translations[lang][status]}${translations[lang].plc_label}`, 
+                      `<p>没有找到相关设备。</p>`);
+            return;
+        }
+
+        const content = `<ul>${ips.map(item => `<li>${item}</li>`).join('')}</ul>`;
+        showModal(`${area}${translations[lang].area_label} ${translations[lang][status]}${translations[lang].plc_label} (${ips.length})`, content);
+    }
+    
+    function showAlarmList(area, status) {
+        const plcContainers = allPlcData[area]?.containers || {};
+        const alarmingContainers = Object.keys(plcContainers)
+                                      .filter(containerId => plcContainers[containerId].status === status);
+
+        if (alarmingContainers.length === 0) {
+            showModal(`${area}${translations[lang].area_label} - ${translations[lang][status]}`, 
+                      `<p>${translations[lang].no_alarms}</p>`);
+            return;
+        }
+
+        const content = alarmingContainers.map(containerId => {
+            const plcData = plcContainers[containerId];
+            const alarms = plcData.Result?.Summary?.AlarmRuntime || [];
+            
+            let alarmContent = `<p>${translations[lang].no_alarms}</p>`;
+            if (alarms.length > 0) {
+                alarmContent = `<ul>${alarms.map(alarm => {
+                    const description = alarm.trim();
+                    
+                    return `
+                    <li>
+                        <strong>${translations[lang].alarm_description}:</strong> <span style="color: red;">${description}</span>
+                    </li>
+                    `;
+                }).join('')}</ul>`;
+            }
+            
+            return `<div class="alarm-group">
+                        <h4>${translations[lang].container_id}: ${containerId}</h4>
+                        ${alarmContent}
+                    </div>`;
+        }).join('');
+        
+        showModal(`${area}${translations[lang].area_label} - ${translations[lang][status]}`, content);
+    }
+
     function renderPlcBriefs(area, containers) {
         const plcList = document.querySelector(`.area-container[data-area="${area}"] .plc-list`);
         if (!plcList) return;
@@ -104,7 +150,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const briefCard = document.createElement('a');
             briefCard.classList.add('plc-card', 'brief-card');
             
-            // Determine the status class for the card
             let statusClass;
             if (plcData.status === 'critical') {
                 statusClass = 'critical-card';
@@ -116,12 +161,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 statusClass = 'normal-card';
             }
             briefCard.classList.add(statusClass);
-
+            
+            const vendor = plcData.vendor || 'N/A';
+            const statusText = translations[lang][plcData.status];
+            
             briefCard.innerHTML = `
                 <div class="plc-status-indicator ${statusClass}"></div>
                 <h3>${translations[lang].container_id}: ${containerId}</h3>
+                <p><strong>${translations[lang].vendor}:</strong> ${vendor}</p>
                 <p><strong>IP:</strong> ${plcData.ip}</p>
-                <p><strong>${translations[lang].status}:</strong> ${translations[lang][plcData.status]}</p>
+                <p><strong>${translations[lang].status}:</strong> ${statusText}</p>
             `;
 
             briefCard.href = `/details/${containerId}?lang=${lang}`;
@@ -130,18 +179,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Main function to update area summary and background color
     function updateAreaSummary(area, summary) {
         const areaContainer = document.querySelector(`.area-container[data-area="${area}"]`);
         const areaHeader = areaContainer.querySelector('.area-header');
         if (!areaHeader) return;
-
-        // Reset class lists
+        
         areaContainer.classList.remove('critical', 'offline', 'warning', 'normal');
         areaHeader.classList.remove('normal', 'warning', 'critical', 'offline');
 
         if (summary) {
-            // Apply background color based on strict priority: critical > warning > offline > normal
             if (summary.critical > 0) {
                 areaContainer.classList.add('critical');
             } else if (summary.warning > 0) {
@@ -149,19 +195,16 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (summary.offline > 0) {
                 areaContainer.classList.add('offline');
             } else if (summary.normal === summary.total && summary.total > 0) {
-                // This is the "all normal" case, applied only if all other high-priority issues are 0.
                 areaContainer.classList.add('normal');
             }
 
-            // Update summary counts
             areaHeader.querySelector('.total-count').textContent = summary.total;
             areaHeader.querySelector('[data-status="normal"]').textContent = summary.normal;
             areaHeader.querySelector('[data-status="critical"]').textContent = summary.critical;
             areaHeader.querySelector('[data-status="warning"]').textContent = summary.warning;
             areaHeader.querySelector('[data-status="offline"]').textContent = summary.offline;
         } else {
-            // No data or error state
-            areaContainer.classList.add('offline'); // Default to offline status when there is no data
+            areaContainer.classList.add('offline'); 
             areaHeader.querySelector('.total-count').textContent = 0;
             areaHeader.querySelector('[data-status="normal"]').textContent = 0;
             areaHeader.querySelector('[data-status="critical"]').textContent = 0;
@@ -169,27 +212,33 @@ document.addEventListener('DOMContentLoaded', function() {
             areaHeader.querySelector('[data-status="offline"]').textContent = 0;
         }
         
-        // Attach click handlers to status counts
         const statusCounts = areaHeader.querySelectorAll('.status-count');
         statusCounts.forEach(span => {
             span.onclick = (e) => {
+                e.stopPropagation();
                 const clickedStatus = e.target.getAttribute('data-status');
-                showPlcIps(area, clickedStatus);
+                
+                if (clickedStatus === 'critical' || clickedStatus === 'warning') {
+                    showAlarmList(area, clickedStatus);
+                } else {
+                    showPlcList(area, clickedStatus);
+                }
             };
         });
         
-        // Attach click handler for expanding/collapsing PLC list
         areaHeader.onclick = (e) => {
-            if (!e.target.matches('.status-count')) {
-                const plcList = areaContainer.querySelector('.plc-list');
-                const isExpanded = plcList.classList.contains('expanded');
-                
-                if (isExpanded) {
-                    plcList.classList.remove('expanded');
-                } else {
-                    renderPlcBriefs(area, allPlcData[area].containers);
-                    plcList.classList.add('expanded');
-                }
+            const target = e.target;
+            if (target.matches('.status-count') || target.closest('.status-count')) {
+                return;
+            }
+            const plcList = areaContainer.querySelector('.plc-list');
+            const isExpanded = plcList.classList.contains('expanded');
+            
+            if (isExpanded) {
+                plcList.classList.remove('expanded');
+            } else {
+                renderPlcBriefs(area, allPlcData[area].containers);
+                plcList.classList.add('expanded');
             }
         };
     }
@@ -212,6 +261,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 for (const area of areas) {
                     const areaData = allPlcData[area];
+                    if (areaData) {
+                        const totalCount = Object.keys(areaData.containers).length;
+                        areaData.summary.total = totalCount;
+                    }
                     updateAreaSummary(area, areaData ? areaData.summary : null);
                 }
             })
@@ -221,13 +274,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 areas.forEach(area => {
                     updateAreaSummary(area, null);
                 });
-            })
-            .finally(() => {
-                const currentInterval = pollingIndex < pollIntervals.length ? pollIntervals[pollingIndex] : pollIntervals[pollIntervals.length - 1];
-                pollingIndex++;
-                setTimeout(fetchDataAndRender, currentInterval);
             });
     }
 
     fetchDataAndRender();
+    setInterval(fetchDataAndRender, REFRESH_INTERVAL_MS);
+
 });

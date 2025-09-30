@@ -1,87 +1,339 @@
 /* 请用这段代码完全替换 static/details.css */
 
+/* 页面主体布局 */
 .details-main {
-    padding: 20px 40px;
+    padding: 2px 4px;
 }
 
-.summary-header {
+/* 头部样式优化 */
+.page-header {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1px 4px;
     border-bottom: 2px solid #ddd;
+}
+.header-left {
+    margin-right: auto;
+}
+.page-title {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+}
+.header-right {
+    margin-left: auto;
+}
+
+/* 摘要信息头 */
+.summary-header {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    padding-bottom: 1px;
+    border-bottom: 2px solid #ddd;
+    background-color: white;
 }
 
 .summary-header h2 {
     font-size: 32px;
-    margin: 0 0 10px 0;
+    margin: 0 0 1px 0;
+    text-align: center;
 }
 
 .summary-info {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    justify-content: center;
+    gap: 30px;
 }
 
-.detail-item {
-    background-color: #f0f4f8;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
-    font-size: 16px;
+.summary-item {
+    font-size: 18px;
+    font-weight: bold;
+    color: #555;
 }
 
+.summary-item span {
+    font-weight: normal;
+    color: #0056b3;
+
+}
+
+/* 状态颜色标记 */
+.status-normal {
+    color: #4CAF50; /* 绿色 */
+}
+.status-warning {
+    color: #FFC107; /* 橙色 */
+}
+.status-critical {
+    color: #F44336; /* 红色 */
+}
+.status-offline, .status-stopped {
+    color: #9E9E9E; /* 灰色 */
+}
+.status-online {
+    color: #2196F3; /* 蓝色 */
+}
+
+/* 详细信息区块 */
+.main-info-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    margin-bottom: 2px;
+}
 .details-section {
     background-color: white;
     border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
+    padding: 2px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    flex: 1;
+    flex: 1 1 45%;
+    min-width: 100px;
 }
-
-.details-section h3 {
+.details-section h3{
     border-bottom: 2px solid #004d99;
-    padding-bottom: 10px;
+    padding-bottom: 1px;
     color: #004d99;
+    margin-top: 0;
 }
-
 .section-content {
-    padding-top: 10px;
+    padding-top: 1px;
+    display: grid;
+    gap: 5px;
+}
+.section-content h4{
+    border-bottom: 2px solid #004d99;
+    padding-bottom: 1px;
+    color: #004d99;
+    margin-top: 0;
 }
 
-.main-info-row {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-}
-
-.fan-list, .sprayer-pump-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: flex-start;
-}
-
-.fan-item, .sprayer-pump-item {
-    background-color: #e2eaf4;
-    padding: 15px;
+/* 详细信息条目 */
+.detail-item {
+    background-color: #f0f4f8;
+    padding: 1px;
     border-radius: 8px;
-    min-width: 180px;
-    flex: 1;
-    box-sizing: border-box;
-}
-
-.fan-item h5, .sprayer-pump-item h5 {
-    margin: 0 0 10px 0;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     color: #0056b3;
 }
+.detail-item strong {
+    color: black;
+}
 
-/* 新增：环境指标的两列布局 */
+/* 列表容器 */
+.fan-list, .sprayer-pump-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 1px;
+}
+
+/* 列表项目 */
+.fan-item, .sprayer-pump-item {
+    background-color: #e2eaf4;
+    padding: 1px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    color: #0056b3;
+}
+.fan-item h5, .sprayer-pump-item h5 {
+    margin: 0 0 1px 0;
+    color: #5cb85c;
+    font-size: 18px;
+}
+.fan-item strong{
+   color: black;
+}
+.fan-item p, .sprayer-pump-item p {
+    margin: 1px 0;
+}
+.sprayer-pump-item strong{
+   color: black;
+}
+/* 环境指标网格布局 */
 .environmental-metrics-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
+}
+
+/* 载入和错误信息 */
+.loading-spinner, #error-message {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.details-section .nav-button {
+    background: #5cb85c;
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 16px;
+    padding: 2px 5px;
+}
+
+/* 导航按钮所在的 details-section 容器 */
+.details-section.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: none;
+    box-shadow: none;
+    padding: 10px 0;
+}
+
+
+/* 导航按钮的样式 */
+.nav-buttons .nav-button {
+    flex-grow: 1; /* 占据可用空间 */
+    text-align: center;
+}
+
+.nav-buttons #prev-container-btn {
+    margin-right: 10px; /* 在两个按钮之间添加一些间距 */
+}
+
+/* 移除之前的按钮浮动和 margin 样式，使用 Flexbox */
+.details-section .nav-button:first-child,
+.details-section .nav-button:last-child {
+    margin-right: initial;
+    float: initial;
+}
+
+.details-section .nav-button:hover:not(.disabled) {
+    background-color: #4cae4c;
+}
+
+.details-section .nav-button.disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    color: #666666;
+}
+/* Modal (弹窗) 样式 */
+.modal {
+    display: none; /* 默认隐藏 */
+    position: fixed; /* 保持在视口中 */
+    z-index: 1000; /* 确保在其他内容之上 */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* 允许滚动 */
+    background-color: rgba(0, 0, 0, 0.4); /* 半透明黑色背景 */
+}
+
+/* 弹窗内容 */
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto; /* 居中显示 */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.5s;
+    position: relative;
+}
+
+/* 弹窗头部 */
+.modal-header {
+    border-bottom: 2px solid #f44336;
+    margin-bottom: 15px;
+}
+
+/* 关闭按钮 */
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 告警列表样式 */
+#alarm-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#alarm-list li {
+    padding: 10px 15px;
+    background-color: #fce4e4;
+    border-left: 5px solid #f44336;
+    margin-bottom: 8px;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #d32f2f;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* 移动设备样式 */
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .header-left, .header-right {
+        margin: 0;
+    }
+
+    .page-title {
+        font-size: 20px;
+    }
+    
+    .summary-info {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .main-info-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .details-section {
+        flex: 1 1 100%;
+    }
+    
+    .environmental-metrics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .fan-list, .sprayer-pump-list {
+        grid-template-columns: 1fr;
+    }
+
+    /* 修复导航按钮换行问题 */
+    .details-section.nav-buttons .nav-button {
+        width: auto; /* 恢复宽度，让按钮根据内容自适应 */
+        margin: 0;
+        text-align: center;
+        box-sizing: border-box;
+    }
 }
