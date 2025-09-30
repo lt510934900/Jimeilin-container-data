@@ -6,70 +6,67 @@
     <title>{{ texts.page_title }} - {{ container_id }} {{ texts.container_details }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='details.css') }}">
-    <style>
-        .page-header {
-            justify-content: space-between;
-        }
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-    </style>
 </head>
 <body>
-    <header class="page-header">
-        <div>
-            <h1 style="margin-left:50%;">{{ texts.page_title }}</h1>
+   <header class="page-header">
+        <div class="header-left">
+             <a href="/?lang={{ lang }}" class="back-button">{{ texts.back_to_main }}</a>
         </div>
+        <h1 class="page-title">{{ texts.page_title }}</h1>
         <div class="header-right">
             <div class="lang-switch">
                 <a href="?lang=zh" class="lang-button {{ 'active' if lang == 'zh' }}">中文</a>
                 <a href="?lang=en" class="lang-button {{ 'active' if lang == 'en' }}">English</a>
             </div>
         </div>
-        <div class="heder-left" style="margin-left:50px;margin-top: 20px;">
-             <a href="/?lang={{ lang }}" class="back-button">{{ texts.back_to_main }}</a>
-        </div>
     </header>
     <main class="details-main">
         <div class="summary-header">
-            <h2 id="container-id" style="margin:auto;">{{ container_id }}</h2>
-            <div class="summary-info" style="margin:auto;">
+            <div class="summary-info">
                 <div class="summary-item"><strong>{{ texts.container_type }}:</strong> <span id="container-type"></span></div>
+                <div id="container-id" style="margin-top: 0.5%;font-weight: bold;font-size: 18px;color: #0056b3;">{{ container_id }}</div>
+                <div id="container-ids" style="display: none;">{{ container_ids | tojson }}</div>
                 <div class="summary-item"><strong>{{ texts.container_status }}:</strong> <span id="container-status"></span></div>
                 <div class="summary-item"><strong>{{ texts.run_mode }}:</strong> <span id="container-mode"></span></div>
             </div>
         </div>
+        
         <div id="loading-spinner" class="loading-spinner"></div>
-        <p id="error-message" style="display: none; text-align: center; color: red;"></p>
+        <p id="error-message" style="display: none;"></p>
+        
         <div id="content-container" style="display: none;">
             <div class="main-info-row">
-                <div id="electrical-metrics-section" class="details-section">
-                    <h3>{{ texts.electrical_metrics }}</h3>
-                    <div id="electrical-metrics-content" class="section-content"></div>
-                </div>
                 <div id="circulation-pump-section" class="details-section">
-                    <h3>{{ texts.circulation_pump }}</h3>
                     <div id="circulation-pump-content" class="section-content"></div>
                 </div>
-                <div id="environmental-metrics-section" class="details-section">
-                <h3>{{ texts.environmental_metrics }}</h3>
-                <div id="environmental-metrics-content" class="section-content"></div>
-            </div>
-            </div>
+                <div id="electrical-metrics-section" class="details-section">
+                    <div id="electrical-metrics-content" class="section-content"></div>
+                    <div id="environmental-metrics-content" class="section-content"></div>
+                </div>
+                <div id="water-cooling-section" class="details-section">
+                    <div id="water-cooling-content" class="section-content"></div>
+                </div>
+            </div>            
             
-            <div id="water-cooling-section" class="details-section">
-                <h3>{{ texts.water_cooling }}</h3>
-                <div id="water-cooling-content" class="section-content"></div>
-            </div>
+        </div>
+
+        <div class="details-section">
+            <a id="prev-container-btn" class="nav-button">{{ texts.previous_page }}</a>
+            <a id="next-container-btn" class="nav-button">{{ texts.next_page }}</a>
         </div>
     </main>
+    <div id="alarm-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div class="modal-header">
+                <h3>{{ texts.warning_alarms }}</h3>
+            </div>
+            <div class="modal-body">
+                <ul id="alarm-list">
+                    </ul>
+            </div>
+        </div>
+    </div>
     <script>
         const TEXTS = {{ texts | tojson }};
     </script>

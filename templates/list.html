@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ texts.page_title }} - {{ texts.list_view }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<!--     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
     <link rel="stylesheet" href="{{ url_for('static', filename='list.css') }}">
 </head>
 <body>
@@ -25,52 +25,33 @@
         </div>
     </header>
     
-    <div class="secondary-header">
+   <div class="secondary-header">
         <div class="header-left">
             <a href="/?lang={{ lang }}" class="back-button">{{ texts.back_to_main }}</a>
         </div>
+        <div class="header-center">
+            <div id="status-summary-container"></div>
+        </div>
         <div class="header-right">
-            <button id="export-button" class="action-button">{{ texts.export_excel }}</button>
+            <div class="buttons-container">
+                <button id="export-button" class="export-button">{{ texts.export_data }}</button>
+            </div>
         </div>
     </div>
-    
-    <div id="status-message"></div>
-    <div id="main-container">
+    <div id="main-container" class="main-container">
         <div id="loading-spinner" class="loading-spinner"></div>
         <p id="error-message" style="display: none; text-align: center; color: red;"></p>
-        <div id="list-container" style="display: none;">
+        
+        <div id="list-container" class="container-list-view" style="display: none;">
             <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>{{ texts.container_id }}</th>
-                        <th>{{ texts.plc_type }}</th>
-                        <th>{{ texts.plc_status }}</th>
-                        <th>{{ texts.in_temp }}(℃)</th>
-                        <th>{{ texts.out_temp }}(℃)</th>
-                        <th>{{ texts.flow_rate }}(m³/h)</th>
-                        <th>{{ texts.cold_water_pressure }}(Bar)</th>
-                        <th>{{ texts.hot_water_pressure }}(Bar)</th>
-                        <th>{{ texts.fan }} 1 - {{ texts.current }}(A)</th>
-                        <th>{{ texts.fan }} 1 - {{ texts.frequency }}(Hz)</th>
-                        <th>{{ texts.fan }} 1 - {{ texts.fan_status }}</th>
-                        <th>{{ texts.fan }} 2 - {{ texts.current }}(A)</th>
-                        <th>{{ texts.fan }} 2 - {{ texts.frequency }}(Hz)</th>
-                        <th>{{ texts.fan }} 2 - {{ texts.fan_status }}</th>
-                        <th>{{ texts.fan }} 3 - {{ texts.current }}(A)</th>
-                        <th>{{ texts.fan }} 3 - {{ texts.frequency }}(Hz)</th>
-                        <th>{{ texts.fan }} 3 - {{ texts.fan_status }}</th>
-                        <th>{{ texts.fan }} 4 - {{ texts.current }}(A)</th>
-                        <th>{{ texts.fan }} 4 - {{ texts.frequency }}(Hz)</th>
-                        <th>{{ texts.fan }} 4 - {{ texts.fan_status }}</th>
-                    </tr>
-                </thead>
                 <tbody id="data-table-body">
                 </tbody>
             </table>
-            <div id="pagination-container" class="pagination-container"></div>
         </div>
+        
+        <div id="pagination-container" class="pagination-container"></div>
     </div>
-
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <script>
         const TEXTS = {{ texts | tojson }};
